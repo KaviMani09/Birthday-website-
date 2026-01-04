@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Coiny&family=Titan+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nerko+One&family=Sriracha&display=swap');
+/* ----------------------- Tailwind Css ------------------------ */
+@import "tailwindcss";
+ @theme{
+    --font-dancingScript: "Dancing Script", "cursive";
+    --font-coiny: "Coiny", "system-ui";
+    --font-sriracha:  "Sriracha", "cursive";
+ }

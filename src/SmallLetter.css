@@ -1,0 +1,480 @@
+/* --- Keyframes (UNCHANGED) --- */
+
+@keyframes upthenscale {
+    0% {
+        transform: translateY(260px);
+    }
+
+    50% {
+        transform: translateY(0);
+    }
+
+    60% {
+        height: 100px;
+        width: 90px;
+        transform: translateY(0);
+    }
+
+    100% {
+        height: 280px;
+        width: 100%;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scalethendown {
+    0% {
+        height: 250px;
+        width: 100%;
+        transform: translateY(0);
+    }
+
+    50% {
+        height: 100px;
+        width: 90px;
+        transform: translateY(0);
+    }
+
+    60% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(250px);
+    }
+}
+
+@keyframes waitfade {
+
+    0%,
+    50% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes Small-wiggle {
+    0% {
+        transform: translateY(310px) rotate(0);
+    }
+
+    25% {
+        transform: translateY(310px) rotate(2deg);
+    }
+
+    50% {
+        transform: translateY(310px) rotate(0deg);
+    }
+
+    75% {
+        transform: translateY(310px) rotate(-2deg);
+    }
+
+    100% {
+        transform: translateY(310px) rotate(0);
+    }
+}
+
+/* --- Container and State Classes --- */
+
+.small-rajib-letter {
+    margin: 200px auto;
+    max-width: 350px;
+    height: 375px;
+    position: relative;
+    overflow: hidden;
+    display: block;
+}
+
+.small-rajib-letter--open .small-rajib-paper {
+    animation-name: upthenscale;
+    animation-duration: .6s;
+    animation-fill-mode: forwards;
+}
+
+.small-rajib-letter--close .small-rajib-paper {
+    animation-name: scalethendown;
+    animation-duration: .4s;
+    animation-fill-mode: forwards;
+}
+
+.small-rajib-letter--open .small-rajib-paper-content {
+    animation-name: waitfade;
+    animation-duration: 1.5s;
+    animation-fill-mode: forwards;
+}
+
+.small-rajib-letter--open .small-rajib-envelope {
+    animation: pause;
+}
+
+/* --- Content and Elements --- */
+
+.small-rajib-paper-content {
+    color: #545454;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    padding: 25px;
+    opacity: 0;
+}
+
+.small-rajib-paper {
+    height: 50px;
+    width: 90px;
+    background: #f1f0c3;
+    transform: translateY(250px);
+    margin: 0 auto;
+    transition: transform 0.3s 0.1s ease;
+    border-radius: 2px;
+    position: relative;
+}
+
+/* --- SVG Container inside the Paper --- */
+.small-rajib-paper .rajib-diary-deco {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
+}
+
+/* --- Base Diary Line/Dot Styling --- */
+.rajib-diary-deco .diary-line {
+    opacity: 0;
+    stroke-dasharray: 100;
+    /* For drawing effect */
+    stroke-dashoffset: 100;
+    animation-fill-mode: forwards;
+}
+
+.rajib-diary-deco .diary-dot {
+    opacity: 0;
+    transform-origin: center center;
+    animation-fill-mode: forwards;
+}
+
+/* --- Keyframe: Draw In (for lines) --- */
+@keyframes drawIn {
+    to {
+        stroke-dashoffset: 0;
+        opacity: 1;
+    }
+}
+
+/* --- Keyframe: Pulse Dot (for stitching) --- */
+@keyframes pulseDot {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+}
+
+
+/* --- Conditional Animation Application (Triggers when the letter is open) --- */
+
+/* Lines animate in (like being drawn) */
+.small-rajib-letter--open .rajib-diary-deco .diary-line {
+    animation: drawIn 1.5s ease-out 0.8s forwards;
+    /* Start after paper opens */
+}
+
+/* Dots appear and pulse after lines are drawn */
+.small-rajib-letter--open .rajib-diary-deco .diary-dot {
+    animation: pulseDot 2s ease-in-out infinite alternate forwards;
+    animation-delay: 2.0s;
+    /* Start after lines are mostly in */
+}
+
+/* Stagger dot animations for a more organic feel */
+.small-rajib-letter--open .rajib-diary-deco .dot-1 {
+    animation-delay: 2.0s;
+}
+
+.small-rajib-letter--open .rajib-diary-deco .dot-2 {
+    animation-delay: 2.1s;
+}
+
+.small-rajib-letter--open .rajib-diary-deco .dot-3 {
+    animation-delay: 2.2s;
+}
+
+.small-rajib-letter--open .rajib-diary-deco .dot-4 {
+    animation-delay: 2.3s;
+}
+
+.small-rajib-letter--open .rajib-diary-deco .dot-5 {
+    animation-delay: 2.4s;
+}
+
+.small-rajib-letter--open .rajib-diary-deco .dot-6 {
+    animation-delay: 2.5s;
+}
+
+.small-rajib-letter--open .rajib-diary-deco .dot-7 {
+    animation-delay: 2.6s;
+}
+
+.small-rajib-letter--open .rajib-diary-deco .dot-8 {
+    animation-delay: 2.7s;
+}
+
+.small-rajib-letter--open .rajib-diary-deco .dot-9 {
+    animation-delay: 2.8s;
+}
+
+/* Content z-index, if not already present */
+.small-rajib-paper-content {
+    z-index: 1;
+    position: relative;
+}
+
+.small-rajib-envelope {
+    width: 94px;
+    height: 60px;
+    background: #f36363;
+    position: relative;
+    margin: auto;
+    z-index: 2;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: box-shadow 0.3s ease;
+    transform: translateY(310px);
+    animation: Small-wiggle 0.3s 0.2s infinite;
+}
+
+/* Hover effects */
+.small-rajib-envelope:hover {
+    animation: pause;
+}
+
+.small-rajib-envelope:hover .small-rajib-envelope-paper {
+    transform: translateY(-20px);
+}
+
+.small-rajib-envelope:hover .small-rajib-envelope-flap {
+    transform: translateY(-45px);
+    transition: all 300ms ease-in-out;
+}
+
+.small-rajib-envelope:hover .small-rajib-envelope-detail::after {
+    visibility: hidden;
+}
+
+.small-rajib-envelope-click-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: black;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    z-index: 10;
+    pointer-events: none;
+    text-align: center;
+}
+
+.small-rajib-letter--open .small-rajib-envelope-click-text {
+    display: none;
+}
+
+.small-rajib-envelope-paper {
+    height: 50px;
+    width: 90px;
+    background: #f1f0c3;
+    transform: translateY(0);
+    margin: 0 auto;
+    transition: transform 0.3s 0.1s ease;
+    border-radius: 2px;
+    position: absolute;
+    border: 2px solid transparent;
+}
+
+.small-rajib-letter--open .small-rajib-envelope-paper {
+    visibility: hidden;
+}
+
+.small-rajib-letter--open .small-rajib-envelope-detail::after {
+    visibility: hidden;
+}
+
+.small-rajib-letter--close .small-rajib-envelope-paper {
+    visibility: hidden;
+}
+
+.small-rajib-envelope-flap {
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 45px solid transparent;
+    border-right: 45px solid transparent;
+    border-bottom: 45px solid #f36363;
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    margin: auto;
+    transform: translateY(0);
+    transition: all 300ms ease-in-out;
+}
+
+.small-rajib-letter--open .small-rajib-envelope-flap {
+    transform: translateY(-45px);
+    transition: all 300ms ease-in-out;
+}
+
+.small-rajib-letter--open .small-rajib-envelope-detail {
+    border-top: 2px solid #e25b5b;
+}
+
+.small-rajib-envelope-detail {
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    display: block;
+    position: absolute;
+    background: #f36363;
+    border-top: 2px solid transparent;
+}
+
+.small-rajib-envelope-detail:before {
+    content: '';
+    width: 70px;
+    height: 70px;
+    background: #f36363;
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 30px;
+    margin: auto;
+    transform: rotate(45deg);
+    border: 4px solid #e65454;
+}
+
+.small-rajib-envelope-detail:after {
+    content: '';
+    width: 70px;
+    height: 70px;
+    background: #f36363;
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -45px;
+    margin: auto;
+    transform: rotate(45deg);
+    border: 4px solid #e65454;
+}
+
+.small-rajib-envelope-fold {
+    height: 25px;
+    width: 86px;
+    background: #f36363;
+    border: 4px solid #e65454;
+    display: block;
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    transition: all 0.3s ease;
+    border-radius: 3px;
+}
+
+.small-rajib-paper-close {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+
+
+
+
+
+@media screen and (max-width: 658px) {
+    @keyframes upthenscale {
+        0% {
+            transform: translateY(250px);
+        }
+
+        50% {
+            transform: translateY(0);
+        }
+
+        60% {
+            height: 100px;
+            width: 90px;
+            transform: translateY(0);
+        }
+
+        100% {
+            height: 280px;
+            width: 100%;
+            transform: translateY(0);
+        }
+    }
+
+    .small-rajib-paper-content {
+        font-size: 14px;
+        width: 290px;
+    }
+
+    .small-rajib-envelope-paper {
+        height: 40px;
+    }
+
+    .small-rajib-paper {
+        height: 36px;
+        width: 65px;
+        transform: translateY(275px);
+    }
+
+    .small-rajib-envelope {
+        width: 65px;
+        height: 40px;
+    }
+
+    .small-rajib-envelope-detail::before {
+        width: 55px;
+        height: 56px;
+        top: 30px;
+    }
+
+    .small-rajib-envelope-detail::after {
+        width: 63px;
+        height: 64px;
+        top: -46px;
+    }
+
+    .small-rajib-envelope-flap {
+        border-left: 34px solid transparent;
+        border-right: 31px solid transparent;
+        border-bottom: 45px solid #f36363;
+    }
+
+    .small-rajib-envelope-flap {
+        transition: all 300ms ease-in-out;
+	transform: translateY(-6px);
+}
+
+}

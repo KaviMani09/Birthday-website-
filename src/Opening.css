@@ -1,0 +1,586 @@
+@import url(https://fonts.googleapis.com/css?family=Lato:300italic);
+
+#CakeWrapper {
+    width: 400px;
+    margin: 0 auto;
+}
+
+/* --- Base style for the loader container --- */
+.loader-wrapper {
+    transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.8s ease-out;
+    transform: translateY(0);
+    opacity: 1;
+}
+.slide-up-fade-out {
+    transform: translateY(-100vh);
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* --- SVG Wrapper Styles (No change) --- */
+
+.full-screen-deco {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* --- Base Decoration Shape Styles --- */
+.deco-shape {
+    opacity: 0;
+    animation-fill-mode: forwards;
+    transform-origin: center center;
+    /* Ensure consistent rotation/scaling */
+}
+
+/* 1. Large, Slow Circle (Bubble/Cloud) - existing, minor tweaks */
+.deco-shape.big-circle {
+    opacity: 0.5;
+    animation: slowFloat 20s ease-in-out infinite alternate,
+        moveAcross 35s linear infinite;
+    animation-delay: 1s;
+}
+
+/* 2. Subtle, Rotating Ring - existing, minor tweaks */
+.deco-shape.small-ring {
+    opacity: 0.6;
+    animation: slowRotate 30s linear infinite reverse,
+        gentleDrift 25s ease-in-out infinite;
+    animation-delay: 5s;
+}
+
+/* --- NEW PARTICLE/CLOUD STYLES & ANIMATIONS --- */
+
+.deco-shape.particle-red-1 {
+    animation: floatAndFade 18s ease-in-out infinite alternate,
+        rotateZ 15s linear infinite;
+    animation-delay: 2s;
+    opacity: 0.7;
+}
+
+.deco-shape.particle-white-1 {
+    animation: driftUp 22s ease-in-out infinite,
+        sway 10s ease-in-out infinite alternate;
+    animation-delay: 4s;
+    opacity: 0.6;
+}
+
+.deco-shape.particle-pink-1 {
+    animation: floatAndScale 25s linear infinite,
+        wiggle 7s ease-in-out infinite alternate;
+    animation-delay: 6s;
+    opacity: 0.5;
+}
+
+.deco-shape.particle-red-2 {
+    animation: driftDiagonal 20s ease-in-out infinite alternate,
+        pulseOpacity 3s ease-in-out infinite alternate;
+    animation-delay: 8s;
+    opacity: 0.8;
+}
+
+.deco-shape.particle-white-2 {
+    animation: floatAndFade 23s ease-in-out infinite reverse,
+        rotateZ 18s linear infinite reverse;
+    animation-delay: 10s;
+    opacity: 0.7;
+}
+
+.deco-shape.particle-pink-2 {
+    animation: driftUp 27s ease-in-out infinite reverse,
+        sway 12s ease-in-out infinite alternate;
+    animation-delay: 12s;
+    opacity: 0.4;
+}
+
+/* Small scattered dots */
+.deco-shape.particle-dot-1 {
+    animation: smallSparkle 4s ease-out infinite forwards;
+    animation-delay: 1s;
+    opacity: 0.9;
+}
+
+.deco-shape.particle-dot-2 {
+    animation: smallSparkle 4s ease-out infinite forwards;
+    animation-delay: 2.5s;
+    opacity: 0.8;
+}
+
+.deco-shape.particle-dot-3 {
+    animation: smallSparkle 4s ease-out infinite forwards;
+    animation-delay: 0.5s;
+    opacity: 0.7;
+}
+
+.deco-shape.particle-dot-4 {
+    animation: smallSparkle 4s ease-out infinite forwards;
+    animation-delay: 3.2s;
+    opacity: 0.95;
+}
+
+
+/* --- NEW Keyframes for Random Animations --- */
+
+/* 7. Float and Fade (Combines vertical float with opacity change) */
+@keyframes floatAndFade {
+    0% {
+        transform: translateY(0);
+        opacity: 0.5;
+    }
+
+    50% {
+        transform: translateY(-15vh);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 0.5;
+    }
+}
+
+/* 8. Rotate Z (Simple 360 rotation) */
+@keyframes rotateZ {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* 9. Drift Up (Slower, gentle vertical drift) */
+@keyframes driftUp {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(-20vh);
+    }
+}
+
+/* 10. Sway (Horizontal, gentle oscillation) */
+@keyframes sway {
+    0% {
+        transform: translateX(0);
+    }
+
+    50% {
+        transform: translateX(10vw);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+/* 11. Float and Scale (Combines vertical float with size change) */
+@keyframes floatAndScale {
+    0% {
+        transform: translateY(0) scale(1);
+    }
+
+    50% {
+        transform: translateY(-10vh) scale(1.1);
+    }
+
+    100% {
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* 12. Wiggle (Small, random-like movement) */
+@keyframes wiggle {
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    25% {
+        transform: translate(2vw, 1vh) rotate(5deg);
+    }
+
+    50% {
+        transform: translate(-1vw, -2vh) rotate(-3deg);
+    }
+
+    75% {
+        transform: translate(3vw, 0.5vh) rotate(2deg);
+    }
+}
+
+/* 13. Drift Diagonal (Moves up and to the side) */
+@keyframes driftDiagonal {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    100% {
+        transform: translate(10vw, -15vh);
+    }
+}
+
+/* 14. Pulse Opacity (Fades in and out gently) */
+@keyframes pulseOpacity {
+    0% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.6;
+    }
+}
+
+/* 15. Small Sparkle (Quick fade-in/out for dots) */
+@keyframes smallSparkle {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1.5);
+    }
+}
+
+.cake {
+    cursor: pointer;
+
+}
+
+/* body {
+  background: #ee9ca7;
+} */
+
+#cake {
+    display: block;
+    position: relative;
+    margin: -10em auto 0 auto;
+}
+
+/* ============================================== Candle
+*/
+
+.velas {
+    background: #ffffff;
+    border-radius: 10px;
+    position: absolute;
+    top: 228px;
+    left: 50%;
+    margin-left: -2.4px;
+    margin-top: -8.33333333px;
+    width: 5px;
+    height: 35px;
+    transform: translateY(-300px);
+    backface-visibility: hidden;
+    animation: in 500ms 6s ease-out forwards;
+
+}
+
+.velas:after,
+.velas:before {
+    background: rgba(255, 0, 0, 0.4);
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 2.22222222px;
+}
+
+.velas:after {
+    top: 25%;
+    left: 0;
+}
+
+.velas:before {
+    top: 45%;
+    left: 0;
+}
+
+/* ============================================== Fire
+*/
+
+.fuego {
+    border-radius: 100%;
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    margin-left: -2.6px;
+    width: 6.66666667px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.fuego:nth-child(1) {
+    animation: fuego 2s 6.5s infinite;
+}
+
+.fuego:nth-child(2) {
+    animation: fuego 1.5s 6.5s infinite;
+}
+
+.fuego:nth-child(3) {
+    animation: fuego 1s 6.5s infinite;
+}
+
+.fuego:nth-child(4) {
+    animation: fuego 0.5s 6.5s infinite;
+}
+
+.fuego:nth-child(5) {
+    animation: fuego 0.2s 6.5s infinite;
+}
+
+/* ============================================== Animation Fire
+*/
+
+@keyframes fuego {
+
+    0%,
+    100% {
+        background: rgba(254, 248, 97, 0.5);
+        box-shadow: 0 0 40px 10px rgba(248, 233, 209, 0.2);
+        transform: translateY(0) scale(1);
+    }
+
+    50% {
+        background: rgba(255, 50, 0, 0.1);
+        box-shadow: 0 0 40px 20px rgba(248, 233, 209, 0.2);
+        transform: translateY(-20px) scale(0);
+    }
+}
+
+@keyframes in {
+    to {
+        transform: translateY(0);
+    }
+}
+
+.cakeText {
+    color: #8b6a60;
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    font-style: italic;
+    text-align: center;
+
+    h1 {
+        font-size: 1.4em;
+    }
+
+    p {
+        font-family: "Open Sans";
+        font-size: 1.5em;
+    }
+}
+
+
+/* --- Cake Text Container (The overall wrapper) --- */
+.cakeText {
+    position: fixed;
+    top: 66%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* Centered and clean */
+    opacity: 0;
+    /* Starts hidden */
+    visibility: hidden;
+    text-align: center;
+    font-family: 'Dancing Script', cursive;
+    z-index: 10002;
+
+    /* Animation: Custom cubic-bezier reveal after 6.8s */
+    animation: textAppear 1.2s cubic-bezier(0.23, 1, 0.32, 1) 6.8s forwards;
+}
+
+/* --- Cake Text Title (Happy 18th Birthday!) --- */
+.cakeText .cakeText-title {
+    font-size: 45px;
+    /* Large and prominent */
+    line-height: 1;
+    color: #8B0000;
+    /* Deeper Hello Kitty pink */
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+    /* Soft pink glow */
+}
+
+/* --- Cake Text Name (Ahona) --- */
+.cakeText .cakeText-name {
+    font-family: 'Inter', sans-serif;
+    font-size: 2.5em;
+    font-weight: 700;
+    color: #8b0000;
+    /* Hello Kitty Pink */
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: nameDrop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) 7.4s forwards;
+}
+
+/* --- Cake Text Kitty Bow Decoration --- */
+.cakeText .cakeText-kitty-bow {
+    position: absolute;
+    top: 8px;
+    rotate: 46deg;
+    right: 80px;
+    width: 80px;
+    height: 50px;
+    background-image: url('/src/assets/ribbonImg.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: 10;
+    opacity: 0;
+    animation: bowWiggle 1s ease-in-out infinite alternate 7.4s forwards;
+}
+
+/* --- Keyframes --- */
+
+/* 1. Ultra Smooth Reveal (for .cakeText container) */
+@keyframes textAppear {
+    0% {
+        opacity: 0;
+        visibility: hidden;
+        transform: translate(-50%, -40%);
+        /* Starts slightly offset */
+    }
+
+    100% {
+        opacity: 1;
+        visibility: visible;
+        transform: translate(-50%, -50%);
+        /* Ends centered */
+    }
+}
+
+/* 2. Name Drop (for .cakeText-name) */
+@keyframes nameDrop {
+    0% {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 3. Bow Wiggle (for .cakeText-kitty-bow) */
+@keyframes bowWiggle {
+    0% {
+        transform: rotate(0deg);
+        opacity: 1;
+        /* Make visible when animation starts */
+    }
+
+    25% {
+        transform: rotate(10deg);
+    }
+
+    50% {
+        transform: rotate(-8deg);
+    }
+
+    75% {
+        transform: rotate(5deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+        opacity: 1;
+    }
+}
+
+/* --- Cake Text Name (Ahona) --- */
+.cakeText .cakeText-name {
+    /* New Font Style for Elegance */
+    font-family: 'Great Vibes', 'Dancing Script', cursive;
+    font-size: 3.5em;
+    /* Much larger for impact */
+    font-weight: 500;
+    margin-top: 0px;
+    color: #961212;
+    text-transform: capitalize;
+    letter-spacing: 0px;
+    opacity: 0;
+    transform: translateX(-50px) scale(0.9);
+    animation: ribbonFadeIn 1s cubic-bezier(0.65, 0.05, 0.36, 1) 7.4s forwards;
+    text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+    /* Soft glow */
+}
+
+/* --- Keyframes for Ribbon Fade In --- */
+@keyframes ribbonFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateX(-70px) scale(0.8);
+        filter: blur(5px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+        filter: blur(0);
+    }
+}
+
+
+
+
+
+@media screen and (max-width: 658px) {
+    #CakeWrapper {
+        width: auto;
+    }
+
+    .cakeText {
+        position: fixed;
+        top: 65%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    /* --- Cake Text Title (Happy 18th Birthday!) --- */
+    .cakeText .cakeText-title {
+        font-size: 36px;
+        color: #8b0000;
+        width: 300px;
+    }
+
+    .cakeText .cakeText-name {
+        font-size: 2.5em;
+        margin-top: 10px;
+        opacity: 0;
+        transform: translateY(-20px);
+        animation: nameDrop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) 7.4s forwards;
+    }
+
+    .cakeText .cakeText-kitty-bow {
+        position: absolute;
+        top: 0px;
+        rotate: 46deg;
+        right: 70px;
+        width: 60px;
+        height: 50px;
+        background-image: url('/src/assets/ribbonImg.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+}
