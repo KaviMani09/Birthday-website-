@@ -8,7 +8,7 @@ import hat from '../assets/hat.png'
 import smileIcon from '../assets/smiley_icon.png'
 import BookCanvas from "../components/BookCanvas";
 import SmallLetter from "../components/SmallLetter";
-import kaviya from "../assets/kaviya.jpeg";
+import mk1 from "../assets/mk 1.jpeg";
 import audioFile from "../assets/audio.mp3";
 
 const Home = () => {
@@ -192,7 +192,7 @@ const Home = () => {
                                 
                                 {/* Main image container */}
                                 <div className="image">
-                                    <img src={kaviya} alt="Kaviya" />
+                                    <img src={mk1} alt="Kaviya" />
                                 </div>
                                 
                                 {/* Floating decorative balloons */}

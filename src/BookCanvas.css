@@ -88,9 +88,9 @@
 
 .boxMail .boxMail-container .card1 .userImg {
     position: relative;
-    width: 100px;
+    width: 150px;
     /* Slightly larger */
-    height: 100px;
+    height: 150px;
     background-color: white;
     border-radius: 50%;
     overflow: hidden;
@@ -107,6 +107,7 @@
 .boxMail .boxMail-container .card1 .userImg img {
     position: absolute;
     object-fit: cover;
+    object-position: top center;
     width: 100%;
     height: 100%;
 }

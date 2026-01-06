@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useCallback } from 'react'
-import kaviya from '../assets/kaviya.jpeg'
+import mk4 from '../assets/mk 4.jpeg'
 import { GiCrossMark } from 'react-icons/gi'
 import loveVideo from '../assets/video.mp4'
 
@@ -54,7 +54,7 @@ const BookCanvas = ({ active, setActive }) => {
 
                     {/* User Image remains the same */}
                     <div className="userImg">
-                        <img src={kaviya} alt="Recipient's Photo" />
+                        <img src={mk4} alt="Recipient's Photo" />
                     </div>
 
                     {/* New Hello Kitty themed decoration */}

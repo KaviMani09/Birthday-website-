@@ -801,7 +801,7 @@ const LoveLetter = () => {
                     textShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
                     position: 'relative',
                     zIndex: 1
-                }}>Open</span>
+                }}>click here</span>
                 <style>{`
                     @keyframes heartBeat {
                         0%, 100% { transform: scale(1); }
@@ -888,7 +888,7 @@ const LoveLetter = () => {
                 </svg>
                 <span style={{
                     textShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
-                }}>wishes</span>
+                }}>Open</span>
             </button>
 
             {/* CSS Animations for Love Memories Flow - Optimized */}
@@ -1216,7 +1216,7 @@ const LoveLetter = () => {
                                     letterSpacing: '2px',
                                 }}
                             >
-                                💖 Love Memories 💖
+                                💖 Memories 💖
                             </h2>
                         </div>
 
