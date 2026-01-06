@@ -1,27 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import BookCanvas from '../components/BookCanvas'
-import image1 from '../assets/image 1.jpeg'
-import image2 from '../assets/image 2.jpeg'
-import image3 from '../assets/image 3.jpeg'
-import image4 from '../assets/image 4.jpeg'
-import image5 from '../assets/image 5.jpeg'
-import image6 from '../assets/image 6.jpeg'
-import image7 from '../assets/image 7.jpeg'
-import image8 from '../assets/image 8.jpeg'
-import image9 from '../assets/image 9.jpeg'
-import image10 from '../assets/image 10.jpeg'
-import image11 from '../assets/image 11.jpeg'
-import image12 from '../assets/image 12.jpeg'
-import image13 from '../assets/image 13.jpeg'
-import image14 from '../assets/image 14.jpeg'
-import image15 from '../assets/image 15.jpeg'
-import image16 from '../assets/image 16.jpeg'
-import image17 from '../assets/image 17.jpeg'
-import image18 from '../assets/image 18.jpeg'
-import image19 from '../assets/image 19.jpeg'
-import image20 from '../assets/image 20.mp3'
-import image21 from '../assets/image 21.mp3'
-import kaviya from '../assets/kaviya.jpeg'
+import memoryMediaData from '../data/memoryMedia'
 
 // Memoized Memory Card Component for better performance
 const MemoryCard = React.memo(({
@@ -32,7 +11,9 @@ const MemoryCard = React.memo(({
     onLoad,
     onError,
     videoRef,
-    audioRef
+    audioRef,
+    muted,
+    reduceMotion
 }) => {
     const [isLoaded, setIsLoaded] = useState(false);
     const [hasError, setHasError] = useState(false);
@@ -223,7 +204,7 @@ const MemoryCard = React.memo(({
                                 controls
                                 playsInline
                                 loop
-                                muted={false}
+                                muted={muted}
                                 preload={isActive ? 'auto' : 'metadata'}
                                 onError={() => {
                                     setHasError(true);
@@ -268,6 +249,7 @@ const MemoryCard = React.memo(({
                                 src={media.src}
                                 controls
                                 loop
+                                muted={muted}
                                 preload={isActive ? 'auto' : 'metadata'}
                                 style={{
                                     width: '100%',
@@ -329,7 +311,7 @@ const MemoryCard = React.memo(({
                                     objectPosition: 'center center',
                                     display: isLoaded ? 'block' : 'none',
                                     opacity: isLoaded ? 1 : 0,
-                                    transition: isLoaded ? 'opacity 0.3s ease-in-out' : 'none',
+                                    transition: reduceMotion ? 'none' : (isLoaded ? 'opacity 0.3s ease-in-out' : 'none'),
                                     position: 'absolute',
                                     top: 0,
                                     left: 0,
@@ -406,49 +388,32 @@ const LoveLetter = () => {
     const [touchStart, setTouchStart] = useState(null);
     const [touchEnd, setTouchEnd] = useState(null);
     const [isTransitioning, setIsTransitioning] = useState(false);
+    const [soundEnabled, setSoundEnabled] = useState(false);
+    const [reduceMotion, setReduceMotion] = useState(false);
     const sliderRef = useRef(null);
     const videoRefs = useRef([]);
     const audioRefs = useRef([]);
     const resizeTimeoutRef = useRef(null);
     const touchMoveTimeoutRef = useRef(null);
 
+    // Persisted preferences
+    useEffect(() => {
+        const storedSound = localStorage.getItem('birthday_sound_enabled');
+        const storedMotion = localStorage.getItem('birthday_reduce_motion');
+        setSoundEnabled(storedSound === 'true');
+        setReduceMotion(storedMotion === 'true');
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem('birthday_sound_enabled', soundEnabled ? 'true' : 'false');
+    }, [soundEnabled]);
+
+    useEffect(() => {
+        localStorage.setItem('birthday_reduce_motion', reduceMotion ? 'true' : 'false');
+    }, [reduceMotion]);
+
     // Memory media array - memoized to prevent recreation
-    const memoryMedia = useMemo(() => [
-        {
-            type: 'video',
-            src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-        },
-        { type: 'image', src: image1 },
-        { type: 'image', src: image2 },
-        { type: 'image', src: image3 },
-        { type: 'image', src: image4 },
-        { type: 'image', src: image5 },
-        { type: 'image', src: image6 },
-        { type: 'image', src: image7 },
-        { type: 'image', src: image10 },
-        { type: 'image', src: image12 },
-        { type: 'image', src: image16 },
-        { type: 'image', src: image8 },
-        { type: 'image', src: image9 },
-        { type: 'image', src: image11 },
-        { type: 'image', src: kaviya },
-        { type: 'image', src: image14 },
-        { type: 'image', src: image15 },
-        { type: 'image', src: image17 },
-        { type: 'image', src: image19 },
-        {
-            type: 'audio',
-            src: image20,
-        },
-        {
-            type: 'audio',
-            src: image21,
-        },
-
-        // { type: 'image', src: image13 },
-        // { type: 'image', src: image18 },
-
-    ], []);
+    const memoryMedia = useMemo(() => memoryMediaData, []);
 
     // Debounced resize handler
     useEffect(() => {
@@ -1255,12 +1220,14 @@ const LoveLetter = () => {
                                             opacity: isActive ? 1 : 0,
                                             visibility: isActive ? 'visible' : 'hidden',
                                             transform: `translateX(${(index - currentImageIndex) * 100}%) translateY(${isActive ? '0' : '20px'}) scale(${isActive ? '1' : '0.9'})`,
-                                            transition: isTransitioning
-                                                ? 'opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s'
-                                                : 'none',
+                                            transition: reduceMotion
+                                                ? 'none'
+                                                : isTransitioning
+                                                    ? 'opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s'
+                                                    : 'none',
                                             pointerEvents: isActive ? 'auto' : 'none',
                                             zIndex: isActive ? 10 : 1,
-                                            willChange: isActive ? 'transform, opacity' : 'auto',
+                                            willChange: reduceMotion ? 'auto' : (isActive ? 'transform, opacity' : 'auto'),
                                         }}
                                     >
                                         <MemoryCard
@@ -1274,6 +1241,8 @@ const LoveLetter = () => {
                                             audioRef={media.type === 'audio' ? (el) => {
                                                 audioRefs.current[index] = el;
                                             } : null}
+                                            muted={!soundEnabled}
+                                            reduceMotion={reduceMotion}
                                         />
                                     </div>
                                 );
