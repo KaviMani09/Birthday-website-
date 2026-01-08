@@ -390,6 +390,7 @@ const LoveLetter = () => {
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [soundEnabled, setSoundEnabled] = useState(false);
     const [reduceMotion, setReduceMotion] = useState(false);
+    const [complimentIndex, setComplimentIndex] = useState(0);
     const sliderRef = useRef(null);
     const videoRefs = useRef([]);
     const audioRefs = useRef([]);
@@ -414,6 +415,15 @@ const LoveLetter = () => {
 
     // Memory media array - memoized to prevent recreation
     const memoryMedia = useMemo(() => memoryMediaData, []);
+
+    // Sweet rotating compliments to keep the vibe fresh
+    const complimentPhrases = useMemo(() => ([
+        'You make every room brighter. ✨',
+        'Your smile is my favorite view.',
+        'Thanks for being you—exactly you.',
+        'Today is yours; enjoy every second!',
+        'You are loved more than you know.',
+    ]), []);
 
     // Debounced resize handler
     useEffect(() => {
@@ -727,6 +737,14 @@ const LoveLetter = () => {
         }
     }), [isMobile]);
 
+    // Cycle through compliments on a timer
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setComplimentIndex((prev) => (prev + 1) % complimentPhrases.length);
+        }, 6500);
+        return () => clearInterval(timer);
+    }, [complimentPhrases]);
+
     return (
         <main className='munna bg-[#8b0000] h-screen w-full overflow-hidden'>
             {/* Custom Open Button */}
@@ -818,6 +836,42 @@ const LoveLetter = () => {
 
             {/* BookCanvas Component */}
             <BookCanvas active={Active} setActive={SetActive} />
+
+            {/* Compliment ticker */}
+            <div
+                style={{
+                    position: 'fixed',
+                    top: isMobile ? '10px' : '20px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    background: 'linear-gradient(135deg, rgba(255, 107, 107, 0.85) 0%, rgba(238, 90, 111, 0.85) 100%)',
+                    color: '#fff',
+                    padding: isMobile ? '10px 16px' : '12px 20px',
+                    borderRadius: '18px',
+                    boxShadow: '0 10px 30px rgba(0,0,0,0.35)',
+                    fontFamily: '"Sriracha", cursive',
+                    letterSpacing: '0.5px',
+                    zIndex: 99,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    cursor: 'pointer',
+                    transition: reduceMotion ? 'none' : 'all 0.3s ease',
+                    opacity: showMemories ? 0 : 1,
+                    pointerEvents: showMemories ? 'none' : 'auto',
+                }}
+                onClick={() => setComplimentIndex((prev) => (prev + 1) % complimentPhrases.length)}
+                onMouseEnter={(e) => {
+                    if (!reduceMotion) e.currentTarget.style.transform = 'translateX(-50%) scale(1.03)';
+                }}
+                onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateX(-50%)';
+                }}
+                aria-live="polite"
+            >
+                <span style={{ fontSize: '1.3rem' }}>💝</span>
+                <span style={{ whiteSpace: 'nowrap' }}>{complimentPhrases[complimentIndex]}</span>
+            </div>
 
             {/* Memories Button */}
             <button
@@ -1160,7 +1214,7 @@ const LoveLetter = () => {
                             ×
                         </button>
 
-                        {/* Title */}
+                        {/* Title + Controls */}
                         <div
                             style={{
                                 position: 'absolute',
@@ -1183,6 +1237,52 @@ const LoveLetter = () => {
                             >
                                 💖 Memories 💖
                             </h2>
+                            <div style={{
+                                marginTop: '10px',
+                                display: 'flex',
+                                gap: '8px',
+                                justifyContent: 'center',
+                                flexWrap: 'wrap'
+                            }}>
+                                <button
+                                    onClick={() => setSoundEnabled((prev) => !prev)}
+                                    style={{
+                                        background: soundEnabled
+                                            ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%)'
+                                            : 'rgba(0,0,0,0.25)',
+                                        color: '#fff',
+                                        border: '1px solid rgba(255,255,255,0.35)',
+                                        padding: isMobile ? '8px 12px' : '8px 14px',
+                                        borderRadius: '12px',
+                                        cursor: 'pointer',
+                                        boxShadow: '0 4px 12px rgba(0,0,0,0.25)',
+                                        fontFamily: '"Sriracha", cursive',
+                                        fontSize: isMobile ? '0.8rem' : '0.95rem',
+                                        transition: reduceMotion ? 'none' : 'all 0.25s ease',
+                                    }}
+                                >
+                                    {soundEnabled ? '🔊 Sound On' : '🔇 Sound Off'}
+                                </button>
+                                <button
+                                    onClick={() => setReduceMotion((prev) => !prev)}
+                                    style={{
+                                        background: reduceMotion
+                                            ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%)'
+                                            : 'rgba(0,0,0,0.25)',
+                                        color: '#fff',
+                                        border: '1px solid rgba(255,255,255,0.35)',
+                                        padding: isMobile ? '8px 12px' : '8px 14px',
+                                        borderRadius: '12px',
+                                        cursor: 'pointer',
+                                        boxShadow: '0 4px 12px rgba(0,0,0,0.25)',
+                                        fontFamily: '"Sriracha", cursive',
+                                        fontSize: isMobile ? '0.8rem' : '0.95rem',
+                                        transition: reduceMotion ? 'none' : 'all 0.25s ease',
+                                    }}
+                                >
+                                    {reduceMotion ? '🌙 Calm Mode' : '✨ Motion Mode'}
+                                </button>
+                            </div>
                         </div>
 
                         {/* Full-Width Card Container - Optimized rendering with adaptive frames */}
@@ -1247,6 +1347,29 @@ const LoveLetter = () => {
                                     </div>
                                 );
                             })}
+                        </div>
+
+                        {/* Media caption */}
+                        <div
+                            style={{
+                                position: 'absolute',
+                                bottom: isMobile ? '125px' : '140px',
+                                left: '50%',
+                                transform: 'translateX(-50%)',
+                                maxWidth: isMobile ? '88%' : '70%',
+                                background: 'linear-gradient(135deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.45) 100%)',
+                                color: '#fff',
+                                padding: isMobile ? '12px 16px' : '14px 20px',
+                                borderRadius: '16px',
+                                textAlign: 'center',
+                                fontFamily: '"Sriracha", cursive',
+                                boxShadow: '0 12px 28px rgba(0,0,0,0.35)',
+                                backdropFilter: 'blur(10px)',
+                                opacity: reduceMotion ? 0.95 : 1,
+                                zIndex: 1001,
+                            }}
+                        >
+                          
                         </div>
 
                         {/* Navigation Buttons - Optimized */}

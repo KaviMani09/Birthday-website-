@@ -1,19 +1,23 @@
-import React, { useEffect, useRef, useCallback } from 'react'
+import React, { useEffect, useRef, useCallback, useState } from 'react'
 import mk4 from '../assets/mk 4.jpeg'
 import { GiCrossMark } from 'react-icons/gi'
+import { HiArrowRight, HiArrowLeft } from 'react-icons/hi'
 import loveVideo from '../assets/video.mp4'
 
 const BookCanvas = ({ active, setActive }) => {
 
     const dropdownRef = useRef(null)
     const videoRef = useRef(null)
-    
+    const [currentPage, setCurrentPage] = useState(0)
+    const [isTurning, setIsTurning] = useState(false)
+    const [turnDirection, setTurnDirection] = useState('forward') // 'forward' or 'backward'
+
     const handleClickOutside = useCallback((event) => {
         if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
             setActive(true)
         }
     }, [setActive])
-    
+
     useEffect(() => {
         document.addEventListener("mousedown", handleClickOutside)
         return () => {
@@ -30,6 +34,95 @@ const BookCanvas = ({ active, setActive }) => {
         }
     }, [active])
 
+    // Page content for each of the 5 pages
+    const pageContents = [
+        {
+            recipient: "To You!",
+            message: (
+                <>
+                    <article style={{ marginBottom: '10px' }}>Happy Birthday kaviya👸❤️</article>
+                    <article style={{ marginBottom: '10px' }}>Nee ippo epdi irukka, enna pannitu irukka nu theriyala... always happy irukkanum... aana indha naal‑la, en manasu ulladha sollanum nu thonudhu.</article>
+                    <article style={{ marginBottom: '10px' }}>Maybe nee enna feel panra nu theriyala.</article>
+                </>
+            )
+        },
+        {
+            recipient: "Page 2",
+            message: (
+                <>
+                    <article style={{ marginBottom: '10px' }}>Kaviya, nee en life‑la romba mukkiyam… always irundha madhiri. First‑aa, ennai manichidu. Naan unna romba kashtapaduthina nu theriyudhu.</article>
+                    <article style={{ marginBottom: '10px' }}>Unna kashtapaduthanum nu naan edhuvum pannala… ellam en situation, en kovathaa‑la nadandhuduchu. Manasaara sorry keatukura.</article>
+                </>
+            )
+        },
+        {
+            recipient: "Page 3",
+            message: (
+                <>
+                    <article style={{ marginBottom: '10px' }}>Unmaiya, nee enna vittu poga koodathu nu naan apdi pesiruppen nadanthiruppen thavira. Ethum en manasara vandha vaarthai illa, Kaviya. Adhu unakkum theriyum nu enakku nambikkai irukku.</article>
+                    <article style={{ marginBottom: '10px' }}>Ennaala un family‑kum romba kashtappattu irukkum. ellaarukkum Manasaara sorry keatukura — appa, amma, thambi, en nanban karthik kittaiyum. Unmaiya sollanum na, unga appa‑amma kaal‑la vizhundhu sorry kekkanum.</article>
+                </>
+            )
+        },
+        {
+            recipient: "Page 4",
+            message: (
+                <>
+                    <article style={{ marginBottom: '10px' }}>Idhellaam unna nerula paathu sollanum nu romba aasai. Aana nee call pannalum pesa mata… sari, nerula paathu kudukkalaam nu nenachen. Unna paaka vara, Apdiyum unna paaka mudiyala naalum epdiyachum un kita sendanum nu thonudhu.</article>
+                    <article style={{ marginBottom: '10px' }}>Naan eppovum unna kadhalichittu dhaan iruppen. Adhula endha Maatram‑um illa. Unakkaaga naan iruppen. Enakkaaga nee irundhaa, unna sandhoshama paathuppaen.</article>
+                </>
+            )
+        },
+         {
+            recipient: "Page 5",
+            message: (
+                <>
+                    <article style={{ marginBottom: '10px' }}>Enakku innum nambikkai iruku Kaviya… Nee enna vittu poga matta nu. Nee enna vena sonna, naan kadaisi varaikum thaniya tha irukkanu.</article>
+                    <article style={{ marginBottom: '10px' }}>Innum neraiya sollanum nu irukku… Aana indha birthday‑la, nee full‑aa happy‑ah irukkanum nu dhaan enaku romba aasai. Indha birthday‑la, onnu mattum therinjikanum — en love unakku eppovum true‑aa, real‑aa dhaan irundhudhu… innum irukku.</article>
+                    <article style={{ marginBottom: '10px' }}>Un smile‑ku naan chinna kaaranama irundhaalum, adhu podhum enaku happy.</article>
+                </>
+            )
+        },
+        {
+            recipient: "Final Page",
+            message: (
+                <>
+                    <article style={{ marginBottom: '10px', textAlign: 'center', marginTop: '15px' }}>Unna pathukurathuku oru vaipu kuduu kaviya…</article>
+                    <article style={{ marginBottom: '10px', textAlign: 'center', fontSize: '18px', fontWeight: 'bold', marginTop: '10px' }}>Love you kaviya 💞</article>
+                    <article style={{ textAlign: 'center', fontSize: '18px', fontWeight: 'bold' }}>Miss you</article>
+
+                    <p className="signature">
+                            Your, Mk
+                        </p>
+                </>
+            )
+        }
+
+        
+    ]
+
+    const handleNextPage = () => {
+        if (currentPage < 5 && !isTurning) {
+            setTurnDirection('forward')
+            setIsTurning(true)
+            setTimeout(() => {
+                setCurrentPage(prev => prev + 1)
+                setIsTurning(false)
+            }, 800) // Match animation duration
+        }
+    }
+
+    const handlePreviousPage = () => {
+        if (currentPage > 0 && !isTurning) {
+            setTurnDirection('backward')
+            setIsTurning(true)
+            setTimeout(() => {
+                setCurrentPage(prev => prev - 1)
+                setIsTurning(false)
+            }, 800) // Match animation duration
+        }
+    }
+
 
     return (
         <div className={`boxMail ${active ? 'hidden opacity-0 pointer-events-none' : 'opacity-100 visible'}`}>
@@ -39,7 +132,7 @@ const BookCanvas = ({ active, setActive }) => {
             </div>
 
             <div ref={dropdownRef} className={`boxMail-container duration-500 -translate-y-1/2 ${active ? 'top-0' : ' top-1/2'}`}>
-                <div className="card1">
+                <div className={`card1 ${currentPage > 0 ? 'card1-flipped' : ''}`}>
                     <div className="cover-text-wrapper">
                         <h4 className="username">
                             Kaviya <span className="underline"></span>
@@ -73,18 +166,15 @@ const BookCanvas = ({ active, setActive }) => {
                     </svg>
                 </div>
 
-                <div className="card2">
-                    <div className="card2-content">
+                <div className={`card2 ${isTurning ? 'page-turning-container' : ''}`}>
+                    <div className={`card2-content ${isTurning ? `page-turning page-turning-${turnDirection}` : ''}`}>
                         <h3 className="card2-recipient">
-                            To You!
+                            {pageContents[currentPage].recipient}
                         </h3>
 
-                        {/* Swapping back to H2 to match the original CSS targeting */}
+                        {/* Page content */}
                         <div className="card2-message-text italic">
-                            <article style={{ marginBottom: '8px' }}>Happy Birthday, Kaviya 👸❤️</article>
-                            <article style={{ marginBottom: '10px' }}>Even in silence, my heart still whispers your name.</article>
-                            <article style={{ marginBottom: '10px' }}>You are not just a memory to me—you are a feeling that I still hold close to my heart. I wish you a day as beautiful as your smile.</article>
-                            <article style={{ marginBottom: '10px' }}>I know I have made mistakes and hurt you. I sincerely apologize. If this day reminds you of anything, let it be that my love for you has always been true.</article>
+                            {pageContents[currentPage].message}
                         </div>
 
                         <div className="card2-decoration"></div> {/* Decoration */}
@@ -102,23 +192,44 @@ const BookCanvas = ({ active, setActive }) => {
                         <div className="corner-ribbon bottom-right"></div>
                         <div className="confetti-dots"></div>
 
-                        <p className="signature">
-                            Your, Mk
-                        </p>
-
+                    
                         {/* Love Video at Bottom Right */}
-                        <div className="love-video-container">
-                            <video
-                                ref={videoRef}
-                                src={loveVideo}
-                                className="love-video"
-                                autoPlay
-                                loop
-                                muted
-                                playsInline
-                                preload="auto"
-                            />
-                        </div>
+                        {currentPage === 0 && (
+                            <div className="love-video-container">
+                                <video
+                                    ref={videoRef}
+                                    src={loveVideo}
+                                    className="love-video"
+                                    autoPlay
+                                    loop
+                                    muted
+                                    playsInline
+                                    preload="auto"
+                                />
+                            </div>
+                        )}
+
+                        {/* Previous Page Arrow at Bottom Left */}
+                        {currentPage > 0 && (
+                            <button
+                                onClick={handlePreviousPage}
+                                className="page-navigation-arrow page-navigation-arrow-prev"
+                                disabled={isTurning}
+                            >
+                                <HiArrowLeft className="arrow-icon" />
+                            </button>
+                        )}
+
+                        {/* Navigation Arrow at Bottom Right */}
+                        {currentPage < 5 && (
+                            <button
+                                onClick={handleNextPage}
+                                className={`page-navigation-arrow page-navigation-arrow-next ${currentPage === 0 ? 'arrow-on-first-page' : ''}`}
+                                disabled={isTurning}
+                            >
+                                <HiArrowRight className="arrow-icon" />
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
