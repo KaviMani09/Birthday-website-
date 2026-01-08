@@ -1290,7 +1290,7 @@ const LoveLetter = () => {
                                             : 'rgba(0,0,0,0.25)',
                                         color: '#fff',
                                         border: '1px solid rgba(255,255,255,0.35)',
-                                        padding: isMobile ? '8px 12px' : '8px 14px',
+                                        padding: isMobile ? '8px 1px' : '8px 1px',
                                         borderRadius: '12px',
                                         cursor: 'pointer',
                                         boxShadow: '0 4px 12px rgba(0,0,0,0.25)',
@@ -1299,7 +1299,7 @@ const LoveLetter = () => {
                                         transition: reduceMotion ? 'none' : 'all 0.25s ease',
                                     }}
                                 >
-                                    {soundEnabled ? '🔊 Sound On' : '🔇 Sound Off'}
+                                    {soundEnabled ? '🔊 On' : '🔇 Off'}
                                 </button>
                                 <button
                                     onClick={() => setReduceMotion((prev) => !prev)}
@@ -1318,7 +1318,7 @@ const LoveLetter = () => {
                                         transition: reduceMotion ? 'none' : 'all 0.25s ease',
                                     }}
                                 >
-                                    {reduceMotion ? '🌙 Calm Mode' : '✨ Motion Mode'}
+                                    {reduceMotion ? '🌙 Calm ' : '✨ Motion '}
                                 </button>
                             </div>
                         </div>
