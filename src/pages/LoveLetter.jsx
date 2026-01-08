@@ -19,6 +19,8 @@ const MemoryCard = React.memo(({
     const [hasError, setHasError] = useState(false);
     const [imageOrientation, setImageOrientation] = useState('landscape'); // 'landscape' or 'portrait'
     const [imageAspectRatio, setImageAspectRatio] = useState(16 / 9);
+    const [videoOrientation, setVideoOrientation] = useState('landscape'); // 'landscape' or 'portrait'
+    const [videoAspectRatio, setVideoAspectRatio] = useState(16 / 9);
     const [currentImageSrc, setCurrentImageSrc] = useState(media.src);
     const imgRef = useRef(null);
     const containerRef = useRef(null);
@@ -27,11 +29,13 @@ const MemoryCard = React.memo(({
     // Reset state when media source changes - crucial for preventing ghost images
     useEffect(() => {
         if (media.src !== currentImageSrc) {
-            // Reset all states when image changes
+            // Reset all states when media changes
             setIsLoaded(false);
             setHasError(false);
             setImageOrientation('landscape');
             setImageAspectRatio(16 / 9);
+            setVideoOrientation('landscape');
+            setVideoAspectRatio(16 / 9);
             setCurrentImageSrc(media.src);
 
             // Clear any existing image element
@@ -48,6 +52,15 @@ const MemoryCard = React.memo(({
             const aspectRatio = img.naturalWidth / img.naturalHeight;
             setImageAspectRatio(aspectRatio);
             setImageOrientation(aspectRatio >= 1 ? 'landscape' : 'portrait');
+        }
+    }, []);
+
+    // Detect video orientation and dimensions
+    const detectVideoOrientation = useCallback((video) => {
+        if (video && video.videoWidth && video.videoHeight) {
+            const aspectRatio = video.videoWidth / video.videoHeight;
+            setVideoAspectRatio(aspectRatio);
+            setVideoOrientation(aspectRatio >= 1 ? 'landscape' : 'portrait');
         }
     }, []);
 
@@ -126,20 +139,34 @@ const MemoryCard = React.memo(({
     }
 
     // Adaptive frame dimensions based on orientation
-    // CSS handles responsive sizing, we set the aspect ratio to maintain image proportions
+    // CSS handles responsive sizing, we set the aspect ratio to maintain media proportions
     const frameStyles = useMemo(() => {
-        if (imageOrientation === 'portrait') {
-            // Vertical frame: taller than wide - let CSS constrain size, aspect-ratio maintains proportions
-            return {
-                aspectRatio: imageAspectRatio > 0 ? `${imageAspectRatio}` : '3/4',
-            };
+        if (media.type === 'video') {
+            // For videos, use video orientation and aspect ratio
+            if (videoOrientation === 'portrait') {
+                return {
+                    aspectRatio: videoAspectRatio > 0 ? `${videoAspectRatio}` : '9/16',
+                };
+            } else {
+                return {
+                    aspectRatio: videoAspectRatio > 0 ? `${videoAspectRatio}` : '16/9',
+                };
+            }
         } else {
-            // Horizontal frame: wider than tall
-            return {
-                aspectRatio: imageAspectRatio > 0 ? `${imageAspectRatio}` : '16/9',
-            };
+            // For images, use image orientation and aspect ratio
+            if (imageOrientation === 'portrait') {
+                // Vertical frame: taller than wide - let CSS constrain size, aspect-ratio maintains proportions
+                return {
+                    aspectRatio: imageAspectRatio > 0 ? `${imageAspectRatio}` : '3/4',
+                };
+            } else {
+                // Horizontal frame: wider than tall
+                return {
+                    aspectRatio: imageAspectRatio > 0 ? `${imageAspectRatio}` : '16/9',
+                };
+            }
         }
-    }, [imageOrientation, imageAspectRatio]);
+    }, [media.type, imageOrientation, imageAspectRatio, videoOrientation, videoAspectRatio]);
 
     return (
         <div
@@ -155,7 +182,7 @@ const MemoryCard = React.memo(({
         >
             <div
                 ref={media.type === 'image' ? imgRef : null}
-                className={`memory-frame memory-frame-${imageOrientation}`}
+                className={`memory-frame memory-frame-${media.type === 'video' ? videoOrientation : imageOrientation}`}
                 style={{
                     ...frameStyles,
                     borderRadius: 'clamp(15px, 2vw, 20px)',
@@ -191,11 +218,11 @@ const MemoryCard = React.memo(({
                             <video
                                 ref={videoRef}
                                 src={media.src}
-                                className="memory-video"
+                                className={`memory-video memory-video-${videoOrientation}`}
                                 style={{
                                     width: '100%',
                                     height: '100%',
-                                    objectFit: 'cover',
+                                    objectFit: 'contain',
                                     objectPosition: 'center center',
                                     display: 'block',
                                     position: 'relative',
@@ -206,6 +233,14 @@ const MemoryCard = React.memo(({
                                 loop
                                 muted={muted}
                                 preload={isActive ? 'auto' : 'metadata'}
+                                onLoadedMetadata={(e) => {
+                                    const video = e.target;
+                                    if (video && video.videoWidth && video.videoHeight) {
+                                        detectVideoOrientation(video);
+                                    }
+                                    setIsLoaded(true);
+                                    if (onLoad) onLoad();
+                                }}
                                 onError={() => {
                                     setHasError(true);
                                     if (onError) onError();
@@ -985,6 +1020,10 @@ const LoveLetter = () => {
                 }
                 .memory-video {
                     will-change: opacity;
+                    object-fit: contain;
+                    object-position: center center;
+                    width: 100%;
+                    height: 100%;
                 }
                 /* Adaptive Frame System - Responsive Image Handling */
                 .memory-frame {

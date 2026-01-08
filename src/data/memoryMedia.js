@@ -16,16 +16,14 @@ import image16 from '../assets/image 16.jpeg';
 import image17 from '../assets/image 17.jpeg';
 import image19 from '../assets/image 19.jpeg';
 import kaviya from '../assets/kaviya.jpeg';
+import videoMessage from '../assets/videomessages.mp4';
 import audio1 from '../assets/image 20.mp3';
 import audio2 from '../assets/image 21.mp3';
 
 // Centralized memory media definitions with captions and types.
 // This lets the UI stay data-driven and easier to extend.
 const memoryMedia = [
-  {
-    type: 'video',
-    src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'
-  },
+  { type: 'video', src: videoMessage },
   { type: 'image', src: image1 },
   { type: 'image', src: image2 },
   { type: 'image', src: image3 },
