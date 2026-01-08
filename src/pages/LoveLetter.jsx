@@ -1274,7 +1274,7 @@ const LoveLetter = () => {
                                     letterSpacing: '2px',
                                 }}
                             >
-                                💖 Memories 💖
+                                Memories 💖
                             </h2>
                             <div style={{
                                 marginTop: '10px',
