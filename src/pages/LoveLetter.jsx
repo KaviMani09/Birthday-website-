@@ -222,7 +222,7 @@ const MemoryCard = React.memo(({
                                 style={{
                                     width: '100%',
                                     height: '100%',
-                                    objectFit: 'contain',
+                                    objectFit: 'cover',
                                     objectPosition: 'center center',
                                     display: 'block',
                                     position: 'relative',
@@ -1281,7 +1281,6 @@ const LoveLetter = () => {
                                 display: 'flex',
                                 gap: '8px',
                                 justifyContent: 'center',
-                                flexWrap: 'wrap'
                             }}>
                                 <button
                                     onClick={() => setSoundEnabled((prev) => !prev)}
@@ -1386,29 +1385,6 @@ const LoveLetter = () => {
                                     </div>
                                 );
                             })}
-                        </div>
-
-                        {/* Media caption */}
-                        <div
-                            style={{
-                                position: 'absolute',
-                                bottom: isMobile ? '125px' : '140px',
-                                left: '50%',
-                                transform: 'translateX(-50%)',
-                                maxWidth: isMobile ? '88%' : '70%',
-                                background: 'linear-gradient(135deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.45) 100%)',
-                                color: '#fff',
-                                padding: isMobile ? '12px 16px' : '14px 20px',
-                                borderRadius: '16px',
-                                textAlign: 'center',
-                                fontFamily: '"Sriracha", cursive',
-                                boxShadow: '0 12px 28px rgba(0,0,0,0.35)',
-                                backdropFilter: 'blur(10px)',
-                                opacity: reduceMotion ? 0.95 : 1,
-                                zIndex: 1001,
-                            }}
-                        >
-                          
                         </div>
 
                         {/* Navigation Buttons - Optimized */}
@@ -1527,57 +1503,6 @@ const LoveLetter = () => {
                             <span>{memoryMedia[currentImageIndex]?.type === 'video' ? '🎬' : memoryMedia[currentImageIndex]?.type === 'audio' ? '🎵' : '💕'}</span>
                         </div>
 
-                        {/* Media Indicators */}
-                        <div
-                            className="memories-indicators"
-                            style={{
-                                position: 'absolute',
-                                bottom: isMobile ? '70px' : '85px',
-                                left: '50%',
-                                transform: 'translateX(-50%)',
-                                display: 'flex',
-                                gap: isMobile ? '8px' : '12px',
-                                alignItems: 'center',
-                                zIndex: 1001,
-                            }}
-                        >
-                            {memoryMedia.map((media, index) => (
-                                <button
-                                    key={index}
-                                    onClick={() => !isTransitioning && setCurrentImageIndex(index)}
-                                    disabled={isTransitioning}
-                                    style={{
-                                        width: index === currentImageIndex ? '35px' : '12px',
-                                        height: index === currentImageIndex ? '12px' : '12px',
-                                        borderRadius: index === currentImageIndex ? '6px' : '50%',
-                                        border: 'none',
-                                        background: index === currentImageIndex
-                                            ? 'linear-gradient(135deg, rgba(255, 107, 107, 0.9) 0%, rgba(238, 90, 111, 0.9) 100%)'
-                                            : 'rgba(255, 255, 255, 0.4)',
-                                        cursor: isTransitioning ? 'not-allowed' : 'pointer',
-                                        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                                        boxShadow: index === currentImageIndex
-                                            ? '0 4px 15px rgba(255, 107, 107, 0.5), inset 0 2px 5px rgba(255, 255, 255, 0.2)'
-                                            : '0 2px 8px rgba(0, 0, 0, 0.2)',
-                                        opacity: isTransitioning ? 0.5 : 1,
-                                    }}
-                                    aria-label={`Go to ${media.type} ${index + 1}`}
-                                    title={media.type === 'video' ? 'Video' : 'Image'}
-                                    onMouseEnter={(e) => {
-                                        if (index !== currentImageIndex && !isTransitioning) {
-                                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.6)';
-                                            e.currentTarget.style.transform = 'scale(1.2)';
-                                        }
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        if (index !== currentImageIndex) {
-                                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.4)';
-                                            e.currentTarget.style.transform = 'scale(1)';
-                                        }
-                                    }}
-                                />
-                            ))}
-                        </div>
                     </div>
                 </div>
             )}
